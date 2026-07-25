@@ -1,20 +1,33 @@
 const { Sequelize } = require('sequelize');
 
-// Configuración de PostgreSQL usando variable de entorno DATABASE_URL (formato: postgres://user:pass@host:port/dbname)
-const sequelize = new Sequelize(process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/pdf_summarizer_saas', {
+const dbUrl = process.env.DATABASE_URL;
+
+const sequelize = new Sequelize(dbUrl, {
   dialect: 'postgres',
-  logging: false, // Cambiar a true para depurar queries
+  protocol: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  },
+  logging: false,
 });
 
 const connectDB = async () => {
+  if (!dbUrl) {
+    console.error('❌ ERROR: DATABASE_URL no está definida en las variables de entorno.');
+    process.exit(1);
+  }
+  
   try {
     await sequelize.authenticate();
-    await sequelize.sync(); // Sincroniza modelos con la BD
+    await sequelize.sync();
     console.log('✅ Conexión exitosa a PostgreSQL');
   } catch (error) {
     console.error('❌ ERROR DETALLADO DE CONEXIÓN A POSTGRESQL:');
     console.error('Message:', error.message);
-    console.error('Connection URL in use:', process.env.DATABASE_URL || 'DEFAULT_LOCAL');
+    console.error('Connection URL in use:', dbUrl);
     process.exit(1);
   }
 };
