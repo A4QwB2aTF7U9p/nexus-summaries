@@ -1,0 +1,29 @@
+{
+  "name": "pdf-summarizer-saas",
+  "version": "1.0.0",
+  "description": "SaaS para resumir documentos PDF y extraer puntos clave, monetizado mediante suscripción con Stripe",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "saas",
+    "stripe",
+    "express",
+    "mongodb",
+    "jwt",
+    "pdf-summarizer"
+  ],
+  "author": "SaaS Architect",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1",
+    "stripe": "^15.11.0"
+  }
+}
