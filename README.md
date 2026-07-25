@@ -1,4 +1,4 @@
-# SaaS Resumidor de PDFs
+# SaaS Resumidor de PDFs - Nexus Summaries
 
 Infraestructura backend completa para un SaaS monetizado con Stripe.
 
