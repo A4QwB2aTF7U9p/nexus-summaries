@@ -2,24 +2,27 @@ const { Sequelize } = require('sequelize');
 
 const dbUrl = process.env.DATABASE_URL;
 
-const sequelize = new Sequelize(dbUrl, {
-  dialect: 'postgres',
-  protocol: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  },
-  logging: false,
-});
+console.log('DEBUG: DATABASE_URL is', dbUrl);
+
+let sequelize;
+if (dbUrl) {
+  sequelize = new Sequelize(dbUrl, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
+    logging: false,
+  });
+} else {
+  console.error('❌ ERROR: DATABASE_URL no está definida.');
+  process.exit(1);
+}
 
 const connectDB = async () => {
-  if (!dbUrl) {
-    console.error('❌ ERROR: DATABASE_URL no está definida en las variables de entorno.');
-    process.exit(1);
-  }
-  
   try {
     await sequelize.authenticate();
     await sequelize.sync();
@@ -27,7 +30,6 @@ const connectDB = async () => {
   } catch (error) {
     console.error('❌ ERROR DETALLADO DE CONEXIÓN A POSTGRESQL:');
     console.error('Message:', error.message);
-    console.error('Connection URL in use:', dbUrl);
     process.exit(1);
   }
 };
