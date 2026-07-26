@@ -2,10 +2,10 @@ const { Sequelize } = require('sequelize');
 
 const dbUrl = process.env.DATABASE_URL;
 
-console.log('DEBUG: DATABASE_URL is', dbUrl);
+console.log('DEBUG: DATABASE_URL value is:', dbUrl);
 
 let sequelize;
-if (dbUrl) {
+if (dbUrl && typeof dbUrl === 'string') {
   sequelize = new Sequelize(dbUrl, {
     dialect: 'postgres',
     protocol: 'postgres',
@@ -18,7 +18,8 @@ if (dbUrl) {
     logging: false,
   });
 } else {
-  console.error('❌ ERROR: DATABASE_URL no está definida.');
+  console.error('❌ ERROR CRÍTICO: DATABASE_URL no es una cadena válida.');
+  console.error('Valor recibido:', dbUrl);
   process.exit(1);
 }
 
